@@ -1,11 +1,29 @@
 package com.nnk.springboot.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "rating")
+@Getter
+@Setter
 public class Rating {
 
-    // TODO: Map columns in data table RATING with corresponding java fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @Column(name = "moodysRating")
+    private String moodysRating;
+
+    @Column(name = "sandPRating")
+    private String sandPRating;
+
+    @Column(name = "fitchRating")
+    private String fitchRating;
+
+    @Column(name = "orderNumber")
+    private Integer orderNumber;
+
 }
