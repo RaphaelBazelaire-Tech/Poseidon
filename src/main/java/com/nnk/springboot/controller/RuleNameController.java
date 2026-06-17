@@ -1,15 +1,12 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.model.RuleNameModel;
 import com.nnk.springboot.service.RuleNameService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RuleNameController {
@@ -27,12 +24,13 @@ public class RuleNameController {
     }
 
     @GetMapping("/ruleName/add")
-    public String addRuleForm(RuleName bid) {
+    public String addForm(@ModelAttribute("ruleName") RuleNameModel ruleName) {
         return "ruleName/add";
     }
 
     @PostMapping("/ruleName/validate")
-    public String validate(@Valid RuleName ruleName, BindingResult result, Model model) {
+    public String validate(@Valid @ModelAttribute("ruleName") RuleNameModel ruleName,
+                           BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "ruleName/add";
         }
@@ -42,14 +40,16 @@ public class RuleNameController {
 
     @GetMapping("/ruleName/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        RuleName ruleName = ruleNameService.findById(id)
+        RuleNameModel ruleName = ruleNameService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid rule name Id:" + id));
         model.addAttribute("ruleName", ruleName);
         return "ruleName/update";
     }
 
     @PostMapping("/ruleName/update/{id}")
-    public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName, BindingResult result, Model model) {
+    public String update(@PathVariable("id") Integer id,
+                         @Valid @ModelAttribute("ruleName") RuleNameModel ruleName,
+                         BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "ruleName/update";
         }
@@ -59,10 +59,10 @@ public class RuleNameController {
     }
 
     @GetMapping("/ruleName/delete/{id}")
-    public String deleteRuleName(@PathVariable("id") Integer id, Model model) {
-        RuleName ruleName = ruleNameService.findById(id)
+    public String delete(@PathVariable("id") Integer id, Model model) {
+        ruleNameService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid rule name Id:" + id));
-        ruleNameService.deleteById(ruleName.getId());
+        ruleNameService.deleteById(id);
         return "redirect:/ruleName/list";
     }
 }
