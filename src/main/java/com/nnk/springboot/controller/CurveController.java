@@ -23,7 +23,7 @@ public class CurveController {
         return "curvePoint/list";
     }
 
-    @GetMapping
+    @GetMapping("/curvePoint/add")
     public String addForm(@ModelAttribute("curvePoint")CurvePointModel curvePoint) {
         return "curvePoint/add";
     }
