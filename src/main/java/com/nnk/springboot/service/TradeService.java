@@ -1,6 +1,7 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.mapper.TradeMapper;
+import com.nnk.springboot.model.TradeModel;
 import com.nnk.springboot.repository.TradeRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +12,23 @@ import java.util.Optional;
 public class TradeService {
 
     private final TradeRepository tradeRepository;
+    private final TradeMapper tradeMapper;
 
-    public TradeService(TradeRepository tradeRepository) {
+    public TradeService(TradeRepository tradeRepository, TradeMapper tradeMapper) {
         this.tradeRepository = tradeRepository;
+        this.tradeMapper = tradeMapper;
     }
 
-    public List<Trade> findAll() {
-        return tradeRepository.findAll();
+    public List<TradeModel> findAll() {
+        return tradeRepository.findAll().stream().map(tradeMapper::toModel).toList();
     }
 
-    public Optional<Trade> findById(Integer id) {
-        return tradeRepository.findById(id);
+    public Optional<TradeModel> findById(Integer id) {
+        return tradeRepository.findById(id).map(tradeMapper::toModel);
     }
 
-    public Trade save(Trade entity) {
-        return tradeRepository.save(entity);
+    public TradeModel save(TradeModel model) {
+        return tradeMapper.toModel(tradeRepository.save(tradeMapper.toEntity(model)));
     }
 
     public void deleteById(Integer id) {

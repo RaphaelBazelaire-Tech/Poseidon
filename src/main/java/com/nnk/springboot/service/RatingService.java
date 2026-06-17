@@ -1,6 +1,7 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.mapper.RatingMapper;
+import com.nnk.springboot.model.RatingModel;
 import com.nnk.springboot.repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +12,23 @@ import java.util.Optional;
 public class RatingService {
 
     private final RatingRepository ratingRepository;
+    private final RatingMapper ratingMapper;
 
-    public RatingService(RatingRepository ratingRepository) {
+    public RatingService(RatingRepository ratingRepository, RatingMapper ratingMapper) {
         this.ratingRepository = ratingRepository;
+        this.ratingMapper = ratingMapper;
     }
 
-    public List<Rating> findAll() {
-        return ratingRepository.findAll();
+    public List<RatingModel> findAll() {
+        return ratingRepository.findAll().stream().map(ratingMapper::toModel).toList();
     }
 
-    public Optional<Rating> findById(Integer id) {
-        return ratingRepository.findById(id);
+    public Optional<RatingModel> findById(Integer id) {
+        return ratingRepository.findById(id).map(ratingMapper::toModel);
     }
 
-    public Rating save(Rating rating) {
-        return ratingRepository.save(rating);
+    public RatingModel save(RatingModel model) {
+        return ratingMapper.toModel(ratingRepository.save(ratingMapper.toEntity(model)));
     }
 
     public void deleteById(Integer id) {

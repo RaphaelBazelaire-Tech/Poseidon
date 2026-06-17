@@ -1,6 +1,6 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.User;
+import com.nnk.springboot.entity.UserEntity;
 import com.nnk.springboot.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return org.springframework.security.core.userdetails.User

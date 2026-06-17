@@ -1,6 +1,7 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.mapper.RuleNameMapper;
+import com.nnk.springboot.model.RuleNameModel;
 import com.nnk.springboot.repository.RuleNameRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +12,23 @@ import java.util.Optional;
 public class RuleNameService {
 
     private final RuleNameRepository ruleNameRepository;
+    private final RuleNameMapper ruleNameMapper;
 
-    public RuleNameService(RuleNameRepository ruleNameRepository) {
+    public RuleNameService(RuleNameRepository ruleNameRepository, RuleNameMapper ruleNameMapper) {
         this.ruleNameRepository = ruleNameRepository;
+        this.ruleNameMapper = ruleNameMapper;
     }
 
-    public List<RuleName> findAll() {
-        return ruleNameRepository.findAll();
+    public List<RuleNameModel> findAll() {
+        return ruleNameRepository.findAll().stream().map(ruleNameMapper::toModel).toList();
     }
 
-    public Optional<RuleName> findById(Integer id) {
-        return ruleNameRepository.findById(id);
+    public Optional<RuleNameModel> findById(Integer id) {
+        return ruleNameRepository.findById(id).map(ruleNameMapper::toModel);
     }
 
-    public RuleName save(RuleName entity) {
-        return ruleNameRepository.save(entity);
+    public RuleNameModel save(RuleNameModel model) {
+        return ruleNameMapper.toModel(ruleNameRepository.save(ruleNameMapper.toEntity(model)));
     }
 
     public void deleteById(Integer id) {

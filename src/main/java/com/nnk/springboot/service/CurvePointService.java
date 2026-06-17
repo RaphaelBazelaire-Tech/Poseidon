@@ -1,6 +1,7 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.mapper.CurvePointMapper;
+import com.nnk.springboot.model.CurvePointModel;
 import com.nnk.springboot.repository.CurvePointRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +12,23 @@ import java.util.Optional;
 public class CurvePointService {
 
     private final CurvePointRepository curvePointRepository;
+    private final CurvePointMapper curvePointMapper;
 
-    public CurvePointService(CurvePointRepository curvePointRepository) {
+    public CurvePointService(CurvePointRepository curvePointRepository, CurvePointMapper curvePointMapper) {
         this.curvePointRepository = curvePointRepository;
+        this.curvePointMapper = curvePointMapper;
     }
 
-    public List<CurvePoint> findAll() {
-        return curvePointRepository.findAll();
+    public List<CurvePointModel> findAll() {
+        return curvePointRepository.findAll().stream().map(curvePointMapper::toModel).toList();
     }
 
-    public Optional<CurvePoint> findById(Integer id) {
-        return curvePointRepository.findById(id);
+    public Optional<CurvePointModel> findById(Integer id) {
+        return curvePointRepository.findById(id).map(curvePointMapper::toModel);
     }
 
-    public CurvePoint save(CurvePoint entity) {
-        return curvePointRepository.save(entity);
+    public CurvePointModel save(CurvePointModel model) {
+        return curvePointMapper.toModel(curvePointRepository.save(curvePointMapper.toEntity(model)));
     }
 
     public void deleteById(Integer id) {
