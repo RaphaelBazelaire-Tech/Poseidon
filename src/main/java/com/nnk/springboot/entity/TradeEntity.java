@@ -7,6 +7,14 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
+/**
+ * Entité JPA représentant une transaction (trade), persistée dans la table {@code trade}.
+ * <p>
+ * Cette classe appartient à la couche de persistance : elle n'est pas exposée
+ * directement aux vues. La conversion vers le {@link com.nnk.springboot.model.TradeModel}
+ * utilisé par Thymeleaf est assurée par le {@link com.nnk.springboot.mapper.TradeMapper}.
+ * Les accesseurs (getters/setters) sont générés par Lombok.
+ */
 @Entity
 @Table(name = "trade")
 @Getter

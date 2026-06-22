@@ -5,6 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entité JPA représentant un utilisateur, persistée dans la table {@code users}.
+ * <p>
+ * Cette classe appartient à la couche de persistance : elle n'est pas exposée
+ * directement aux vues. La conversion vers le {@link com.nnk.springboot.model.UserModel}
+ * utilisé par Thymeleaf est assurée par le {@link com.nnk.springboot.mapper.UserMapper}.
+ * Les accesseurs (getters/setters) sont générés par Lombok.
+ */
 @Entity
 @Table(name = "users")
 @Getter

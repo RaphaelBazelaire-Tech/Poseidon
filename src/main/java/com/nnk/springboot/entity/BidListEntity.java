@@ -7,6 +7,14 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
+/**
+ * Entité JPA représentant une offre (bid), persistée dans la table {@code bidList}.
+ * <p>
+ * Cette classe appartient à la couche de persistance : elle n'est pas exposée
+ * directement aux vues. La conversion vers le {@link com.nnk.springboot.model.BidListModel}
+ * utilisé par Thymeleaf est assurée par le {@link com.nnk.springboot.mapper.BidListMapper}.
+ * Les accesseurs (getters/setters) sont générés par Lombok.
+ */
 @Entity
 @Table(name = "bidList")
 @Getter
