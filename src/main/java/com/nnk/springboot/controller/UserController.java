@@ -1,8 +1,6 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.User;
 import com.nnk.springboot.model.UserModel;
-import com.nnk.springboot.repository.UserRepository;
 import com.nnk.springboot.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
