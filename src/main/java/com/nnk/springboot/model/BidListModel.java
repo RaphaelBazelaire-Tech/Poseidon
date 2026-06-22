@@ -5,6 +5,15 @@ import lombok.*;
 
 import java.sql.Timestamp;
 
+/**
+ * Model (POJO de présentation) représentant une offre (bid).
+ * <p>
+ * C'est l'objet manipulé par les contrôleurs et lié aux formulaires Thymeleaf,
+ * en lieu et place de l'entité {@link com.nnk.springboot.entity.BidListEntity}.
+ * Les champs {@code account}, {@code type} sont obligatoires.
+ * Le patron Builder ({@code @Builder}) est utilisé par le
+ * {@link com.nnk.springboot.mapper.BidListMapper} pour construire les instances.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

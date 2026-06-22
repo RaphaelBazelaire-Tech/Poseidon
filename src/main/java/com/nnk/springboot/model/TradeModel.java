@@ -5,6 +5,15 @@ import lombok.*;
 
 import java.sql.Timestamp;
 
+/**
+ * Model (POJO de présentation) représentant une transaction (trade).
+ * <p>
+ * C'est l'objet manipulé par les contrôleurs et lié aux formulaires Thymeleaf,
+ * en lieu et place de l'entité {@link com.nnk.springboot.entity.TradeEntity}.
+ * Les champs {@code account}, {@code type} sont obligatoires.
+ * Le patron Builder ({@code @Builder}) est utilisé par le
+ * {@link com.nnk.springboot.mapper.TradeMapper} pour construire les instances.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
