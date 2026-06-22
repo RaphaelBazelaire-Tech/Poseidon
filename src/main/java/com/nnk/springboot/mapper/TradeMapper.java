@@ -4,9 +4,19 @@ import com.nnk.springboot.entity.TradeEntity;
 import com.nnk.springboot.model.TradeModel;
 import org.springframework.stereotype.Component;
 
+/**
+ * Convertisseur entre l'entité {@link TradeEntity} (persistance) et le
+ * {@link TradeModel} (présentation), pour les transactions (trades).
+ */
 @Component
 public class TradeMapper {
 
+    /**
+     * Convertit une entité en Model.
+     *
+     * @param entity l'entité à convertir (peut être {@code null})
+     * @return le Model correspondant, ou {@code null} si {@code entity} est {@code null}
+     */
     public TradeModel toModel(TradeEntity entity) {
         if (entity == null) {
             return null;
@@ -37,6 +47,12 @@ public class TradeMapper {
                 .build();
     }
 
+    /**
+     * Convertit un Model en entité.
+     *
+     * @param model le Model à convertir (peut être {@code null})
+     * @return l'entité correspondante, ou {@code null} si {@code model} est {@code null}
+     */
     public TradeEntity toEntity(TradeModel model) {
         if (model == null) {
             return null;

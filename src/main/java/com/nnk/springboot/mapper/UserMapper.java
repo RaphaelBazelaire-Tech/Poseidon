@@ -4,9 +4,19 @@ import com.nnk.springboot.entity.UserEntity;
 import com.nnk.springboot.model.UserModel;
 import org.springframework.stereotype.Component;
 
+/**
+ * Convertisseur entre l'entité {@link UserEntity} (persistance) et le
+ * {@link UserModel} (présentation), pour les utilisateurs.
+ */
 @Component
 public class UserMapper {
 
+    /**
+     * Convertit une entité en Model.
+     *
+     * @param entity l'entité à convertir (peut être {@code null})
+     * @return le Model correspondant, ou {@code null} si {@code entity} est {@code null}
+     */
     public UserModel toModel(UserEntity entity) {
         if (entity == null) {
             return null;
@@ -21,6 +31,12 @@ public class UserMapper {
                 .build();
     }
 
+    /**
+     * Convertit un Model en entité.
+     *
+     * @param model le Model à convertir (peut être {@code null})
+     * @return l'entité correspondante, ou {@code null} si {@code model} est {@code null}
+     */
     public UserEntity toEntity(UserModel model) {
         if (model == null) {
             return null;

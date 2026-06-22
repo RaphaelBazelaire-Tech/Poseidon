@@ -4,9 +4,19 @@ import com.nnk.springboot.entity.BidListEntity;
 import com.nnk.springboot.model.BidListModel;
 import org.springframework.stereotype.Component;
 
+/**
+ * Convertisseur entre l'entité {@link BidListEntity} (persistance) et le
+ * {@link BidListModel} (présentation), pour les offres (bids).
+ */
 @Component
 public class BidListMapper {
 
+    /**
+     * Convertit une entité en Model.
+     *
+     * @param entity l'entité à convertir (peut être {@code null})
+     * @return le Model correspondant, ou {@code null} si {@code entity} est {@code null}
+     */
     public BidListModel toModel(BidListEntity entity) {
         if (entity == null) {
             return null;
@@ -38,6 +48,12 @@ public class BidListMapper {
                 .build();
     }
 
+    /**
+     * Convertit un Model en entité.
+     *
+     * @param model le Model à convertir (peut être {@code null})
+     * @return l'entité correspondante, ou {@code null} si {@code model} est {@code null}
+     */
     public BidListEntity toEntity(BidListModel model) {
         if (model == null) {
             return null;
