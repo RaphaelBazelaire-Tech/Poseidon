@@ -1,6 +1,6 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.model.BidListModel;
 import com.nnk.springboot.service.BidListService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +30,11 @@ public class BidListControllerTest {
     @MockitoBean
     private BidListService bidListService;
 
-    private BidList sample() {
-        BidList bidList = new BidList();
-        bidList.setBidListId(1);
-        bidList.setAccount("Account Test");
-        bidList.setType("Type Test");
-        bidList.setBidQuantity(10d);
-        return bidList;
+    private BidListModel sample() {
+        return BidListModel.builder()
+                .bidListId(1)
+                .account("Account Test")
+                .build();
     }
 
     @Test
@@ -70,7 +68,7 @@ public class BidListControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/bidList/list"));
 
-        verify(bidListService, times(1)).save(any(BidList.class));
+        verify(bidListService, times(1)).save(any(BidListModel.class));
     }
 
     @Test
@@ -84,7 +82,7 @@ public class BidListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("bidList/add"));
 
-        verify(bidListService, times(0)).save(any(BidList.class));
+        verify(bidListService, times(0)).save(any(BidListModel.class));
     }
 
     @Test
@@ -109,7 +107,7 @@ public class BidListControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/bidList/list"));
 
-        verify(bidListService, times(1)).save(any(BidList.class));
+        verify(bidListService, times(1)).save(any(BidListModel.class));
     }
 
     @Test

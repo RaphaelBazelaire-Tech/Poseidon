@@ -1,10 +1,12 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.entity.TradeEntity;
+import com.nnk.springboot.mapper.TradeMapper;
+import com.nnk.springboot.model.TradeModel;
 import com.nnk.springboot.repository.TradeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,41 +23,46 @@ public class TradeServiceTest {
     @Mock
     private TradeRepository tradeRepository;
 
-    @InjectMocks
+    private final TradeMapper tradeMapper = new TradeMapper();
     private TradeService tradeService;
 
-    private Trade sample() {
-        Trade trade = new Trade();
-        trade.setTradeId(1);
-        trade.setAccount("Account Test");
-        trade.setType("Type Test");
-        trade.setBuyQuantity(10d);
-        return trade;
+    @BeforeEach
+    public void setUp() {
+        tradeService = new TradeService(tradeRepository, tradeMapper);
+    }
+
+    private TradeEntity sample() {
+        TradeEntity entity = new TradeEntity();
+        entity.setTradeId(1);
+        entity.setAccount("account_v");
+        return entity;
     }
 
     @Test
-    public void findAllShouldReturnAll() {
+    public void findAllReturnsModels() {
         when(tradeRepository.findAll()).thenReturn(List.of(sample()));
-        List<Trade> result = tradeService.findAll();
+        List<TradeModel> result = tradeService.findAll();
         assertEquals(1, result.size());
+        assertEquals("account_v", result.getFirst().getAccount());
         verify(tradeRepository, times(1)).findAll();
     }
 
     @Test
-    public void findByIdShouldReturnEntity() {
+    public void findByIdReturnsModel() {
         when(tradeRepository.findById(1)).thenReturn(Optional.of(sample()));
-        Optional<Trade> result = tradeService.findById(1);
+        Optional<TradeModel> result = tradeService.findById(1);
         assertTrue(result.isPresent());
-        assertEquals("Account Test", result.get().getAccount());
+        assertEquals("account_v", result.get().getAccount());
         verify(tradeRepository, times(1)).findById(1);
     }
 
     @Test
-    public void saveShouldDelegate() {
-        Trade trade = sample();
-        when(tradeRepository.save(any(Trade.class))).thenReturn(trade);
-        assertEquals(trade, tradeService.save(trade));
-        verify(tradeRepository, times(1)).save(trade);
+    public void savePersistsAndReturnsModel() {
+        when(tradeRepository.save(any(TradeEntity.class))).thenReturn(sample());
+        TradeModel model = TradeModel.builder().account("account_v").build();
+        TradeModel saved = tradeService.save(model);
+        assertEquals("account_v", saved.getAccount());
+        verify(tradeRepository, times(1)).save(any(TradeEntity.class));
     }
 
     @Test

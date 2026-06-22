@@ -1,6 +1,6 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.model.RatingModel;
 import com.nnk.springboot.service.RatingService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,24 +27,18 @@ public class RatingControllerTest {
     @MockitoBean
     private RatingService ratingService;
 
-    private Rating sampleRating() {
-        Rating rating = new Rating();
-        rating.setId(1);
-        rating.setMoodysRating("Aaa");
-        rating.setSandPRating("AAA");
-        rating.setFitchRating("AAA");
-        rating.setOrderNumber(10);
-        return rating;
+    private RatingModel sample() {
+        return RatingModel.builder()
+                .id(1)
+                .moodysRating("Aaa")
+                .build();
     }
 
-    /**
-     * IMPORTANT : Ne fonctionnera qu'une fois le SecurityConfig activé.
-     */
     @Test
     @WithMockUser
     public void homeShouldReturnListViewWithRatings() throws Exception {
 
-        when(ratingService.findAll()).thenReturn(List.of(sampleRating()));
+        when(ratingService.findAll()).thenReturn(List.of(sample()));
 
         mockMvc.perform(get("/rating/list"))
                 .andExpect(status().isOk())
@@ -74,7 +68,7 @@ public class RatingControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/rating/list"));
 
-        verify(ratingService, times(1)).save(any(Rating.class));
+        verify(ratingService, times(1)).save(any(RatingModel.class));
     }
 
     @Test
@@ -87,13 +81,13 @@ public class RatingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("rating/add"));
 
-        verify(ratingService, times(0)).save(any(Rating.class));
+        verify(ratingService, times(0)).save(any(RatingModel.class));
     }
 
     @Test
     @WithMockUser
     public void showUpdateFormShouldReturnUpdateViewWithRating() throws Exception {
-        when(ratingService.findById(1)).thenReturn(Optional.of(sampleRating()));
+        when(ratingService.findById(1)).thenReturn(Optional.of(sample()));
 
         mockMvc.perform(get("/rating/update/1"))
                 .andExpect(status().isOk())
@@ -115,13 +109,13 @@ public class RatingControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/rating/list"));
 
-        verify(ratingService, times(1)).save(any(Rating.class));
+        verify(ratingService, times(1)).save(any(RatingModel.class));
     }
 
     @Test
     @WithMockUser
     public void deleteRatingShouldDeleteAndRedirect() throws Exception {
-        when(ratingService.findById(1)).thenReturn(Optional.of(sampleRating()));
+        when(ratingService.findById(1)).thenReturn(Optional.of(sample()));
 
         mockMvc.perform(get("/rating/delete/1"))
                 .andExpect(status().is3xxRedirection())

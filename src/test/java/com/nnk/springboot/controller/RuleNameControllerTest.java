@@ -1,6 +1,6 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.model.RuleNameModel;
 import com.nnk.springboot.service.RuleNameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +30,11 @@ public class RuleNameControllerTest {
     @MockitoBean
     private RuleNameService ruleNameService;
 
-    private RuleName sample() {
-        RuleName rule = new RuleName();
-        rule.setId(1);
-        rule.setName("Rule Name");
-        rule.setDescription("Description");
-        rule.setJson("{}");
-        rule.setTemplate("Template");
-        rule.setSqlStr("SELECT 1");
-        rule.setSqlPart("WHERE 1=1");
-        return rule;
+    private RuleNameModel sample() {
+        return RuleNameModel.builder()
+                .id(1)
+                .name("Rule Name")
+                .build();
     }
 
     @Test
@@ -77,7 +72,7 @@ public class RuleNameControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/ruleName/list"));
 
-        verify(ruleNameService, times(1)).save(any(RuleName.class));
+        verify(ruleNameService, times(1)).save(any(RuleNameModel.class));
     }
 
     @Test
@@ -104,7 +99,7 @@ public class RuleNameControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/ruleName/list"));
 
-        verify(ruleNameService, times(1)).save(any(RuleName.class));
+        verify(ruleNameService, times(1)).save(any(RuleNameModel.class));
     }
 
     @Test

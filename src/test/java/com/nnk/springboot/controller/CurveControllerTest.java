@@ -1,6 +1,6 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.model.CurvePointModel;
 import com.nnk.springboot.service.CurvePointService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +30,11 @@ public class CurveControllerTest {
     @MockitoBean
     private CurvePointService curvePointService;
 
-    private CurvePoint sample() {
-        CurvePoint curvePoint = new CurvePoint();
-        curvePoint.setId(1);
-        curvePoint.setCurveId(10);
-        curvePoint.setTerm(5d);
-        curvePoint.setValue(15d);
-        return curvePoint;
+    private CurvePointModel sample() {
+        return CurvePointModel.builder()
+                .id(1)
+                .curveId(10)
+                .build();
     }
 
     @Test
@@ -70,7 +68,7 @@ public class CurveControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/curvePoint/list"));
 
-        verify(curvePointService, times(1)).save(any(CurvePoint.class));
+        verify(curvePointService, times(1)).save(any(CurvePointModel.class));
     }
 
     @Test
@@ -83,7 +81,7 @@ public class CurveControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("curvePoint/add"));
 
-        verify(curvePointService, times(0)).save(any(CurvePoint.class));
+        verify(curvePointService, times(0)).save(any(CurvePointModel.class));
     }
 
     @Test
@@ -107,7 +105,7 @@ public class CurveControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/curvePoint/list"));
 
-        verify(curvePointService, times(1)).save(any(CurvePoint.class));
+        verify(curvePointService, times(1)).save(any(CurvePointModel.class));
     }
 
     @Test

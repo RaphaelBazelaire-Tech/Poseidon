@@ -1,10 +1,12 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.entity.RuleNameEntity;
+import com.nnk.springboot.mapper.RuleNameMapper;
+import com.nnk.springboot.model.RuleNameModel;
 import com.nnk.springboot.repository.RuleNameRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,42 +23,46 @@ public class RuleNameServiceTest {
     @Mock
     private RuleNameRepository ruleNameRepository;
 
-    @InjectMocks
+    private final RuleNameMapper ruleNameMapper = new RuleNameMapper();
     private RuleNameService ruleNameService;
 
-    private RuleName sample() {
-        RuleName rule = new RuleName();
-        rule.setId(1);
-        rule.setName("Rule Name");
-        rule.setDescription("Description");
-        rule.setSqlStr("SELECT 1");
-        rule.setSqlPart("WHERE 1=1");
-        return rule;
+    @BeforeEach
+    public void setUp() {
+        ruleNameService = new RuleNameService(ruleNameRepository, ruleNameMapper);
+    }
+
+    private RuleNameEntity sample() {
+        RuleNameEntity entity = new RuleNameEntity();
+        entity.setId(1);
+        entity.setName("name_v");
+        return entity;
     }
 
     @Test
-    public void findAllShouldReturnAll() {
+    public void findAllReturnsModels() {
         when(ruleNameRepository.findAll()).thenReturn(List.of(sample()));
-        List<RuleName> result = ruleNameService.findAll();
+        List<RuleNameModel> result = ruleNameService.findAll();
         assertEquals(1, result.size());
+        assertEquals("name_v", result.getFirst().getName());
         verify(ruleNameRepository, times(1)).findAll();
     }
 
     @Test
-    public void findByIdShouldReturnEntity() {
+    public void findByIdReturnsModel() {
         when(ruleNameRepository.findById(1)).thenReturn(Optional.of(sample()));
-        Optional<RuleName> result = ruleNameService.findById(1);
+        Optional<RuleNameModel> result = ruleNameService.findById(1);
         assertTrue(result.isPresent());
-        assertEquals("Rule Name", result.get().getName());
+        assertEquals("name_v", result.get().getName());
         verify(ruleNameRepository, times(1)).findById(1);
     }
 
     @Test
-    public void saveShouldDelegate() {
-        RuleName rule = sample();
-        when(ruleNameRepository.save(any(RuleName.class))).thenReturn(rule);
-        assertEquals(rule, ruleNameService.save(rule));
-        verify(ruleNameRepository, times(1)).save(rule);
+    public void savePersistsAndReturnsModel() {
+        when(ruleNameRepository.save(any(RuleNameEntity.class))).thenReturn(sample());
+        RuleNameModel model = RuleNameModel.builder().name("name_v").build();
+        RuleNameModel saved = ruleNameService.save(model);
+        assertEquals("name_v", saved.getName());
+        verify(ruleNameRepository, times(1)).save(any(RuleNameEntity.class));
     }
 
     @Test

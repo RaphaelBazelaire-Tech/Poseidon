@@ -1,10 +1,12 @@
 package com.nnk.springboot.service;
 
-import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.entity.CurvePointEntity;
+import com.nnk.springboot.mapper.CurvePointMapper;
+import com.nnk.springboot.model.CurvePointModel;
 import com.nnk.springboot.repository.CurvePointRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,41 +23,46 @@ public class CurvePointServiceTest {
     @Mock
     private CurvePointRepository curvePointRepository;
 
-    @InjectMocks
+    private final CurvePointMapper curvePointMapper = new CurvePointMapper();
     private CurvePointService curvePointService;
 
-    private CurvePoint sample() {
-        CurvePoint curvePoint = new CurvePoint();
-        curvePoint.setId(1);
-        curvePoint.setCurveId(10);
-        curvePoint.setTerm(5d);
-        curvePoint.setValue(15d);
-        return curvePoint;
+    @BeforeEach
+    public void setUp() {
+        curvePointService = new CurvePointService(curvePointRepository, curvePointMapper);
+    }
+
+    private CurvePointEntity sample() {
+        CurvePointEntity entity = new CurvePointEntity();
+        entity.setId(1);
+        entity.setCurveId(7);
+        return entity;
     }
 
     @Test
-    public void findAllShouldReturnAll() {
+    public void findAllReturnsModels() {
         when(curvePointRepository.findAll()).thenReturn(List.of(sample()));
-        List<CurvePoint> result = curvePointService.findAll();
+        List<CurvePointModel> result = curvePointService.findAll();
         assertEquals(1, result.size());
+        assertEquals(Integer.valueOf(7), result.getFirst().getCurveId());
         verify(curvePointRepository, times(1)).findAll();
     }
 
     @Test
-    public void findByIdShouldReturnEntity() {
+    public void findByIdReturnsModel() {
         when(curvePointRepository.findById(1)).thenReturn(Optional.of(sample()));
-        Optional<CurvePoint> result = curvePointService.findById(1);
+        Optional<CurvePointModel> result = curvePointService.findById(1);
         assertTrue(result.isPresent());
-        assertEquals(10, result.get().getCurveId());
+        assertEquals(Integer.valueOf(7), result.get().getCurveId());
         verify(curvePointRepository, times(1)).findById(1);
     }
 
     @Test
-    public void saveShouldDelegate() {
-        CurvePoint curvePoint = sample();
-        when(curvePointRepository.save(any(CurvePoint.class))).thenReturn(curvePoint);
-        assertEquals(curvePoint, curvePointService.save(curvePoint));
-        verify(curvePointRepository, times(1)).save(curvePoint);
+    public void savePersistsAndReturnsModel() {
+        when(curvePointRepository.save(any(CurvePointEntity.class))).thenReturn(sample());
+        CurvePointModel model = CurvePointModel.builder().curveId(7).build();
+        CurvePointModel saved = curvePointService.save(model);
+        assertEquals(Integer.valueOf(7), saved.getCurveId());
+        verify(curvePointRepository, times(1)).save(any(CurvePointEntity.class));
     }
 
     @Test

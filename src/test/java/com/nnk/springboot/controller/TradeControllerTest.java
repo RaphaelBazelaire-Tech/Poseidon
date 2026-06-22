@@ -1,6 +1,6 @@
 package com.nnk.springboot.controller;
 
-import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.model.TradeModel;
 import com.nnk.springboot.service.TradeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +30,13 @@ public class TradeControllerTest {
     @MockitoBean
     private TradeService tradeService;
 
-    private Trade sample() {
-        Trade trade = new Trade();
-        trade.setTradeId(1);
-        trade.setAccount("Account test");
-        trade.setType("Type test");
-        trade.setBuyQuantity(10d);
-        return trade;
+    private TradeModel sample() {
+        return TradeModel.builder()
+                .tradeId(1)
+                .account("Account Test")
+                .build();
     }
 
-    /**
-     * IMPORTANT : Ne fonctionnera qu'une fois le SecurityConfig activé.
-     */
     @Test
     @WithMockUser
     public void homeShouldReturnListView() throws Exception {
@@ -74,7 +69,7 @@ public class TradeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/trade/list"));
 
-        verify(tradeService, times(1)).save(any(Trade.class));
+        verify(tradeService, times(1)).save(any(TradeModel.class));
     }
 
     @Test
@@ -88,12 +83,9 @@ public class TradeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("trade/add"));
 
-        verify(tradeService, times(0)).save(any(Trade.class));
+        verify(tradeService, times(0)).save(any(TradeModel.class));
     }
 
-    /**
-     * IMPORTANT : Ne fonctionnera qu'une fois le SecurityConfig activé.
-     */
     @Test
     @WithMockUser
     public void showUpdateFormShouldReturnUpdateView() throws Exception {
@@ -116,7 +108,7 @@ public class TradeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/trade/list"));
 
-        verify(tradeService, times(1)).save(any(Trade.class));
+        verify(tradeService, times(1)).save(any(TradeModel.class));
     }
 
     @Test
