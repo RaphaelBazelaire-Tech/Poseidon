@@ -22,6 +22,8 @@ public class BidListService {
     private final BidListMapper bidListMapper;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param bidListRepository repository d'accès aux données, injecté par Spring
      * @param bidListMapper convertisseur entité/Model, injecté par Spring
      */

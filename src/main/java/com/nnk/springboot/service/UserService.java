@@ -22,6 +22,8 @@ public class UserService {
     private final UserMapper userMapper;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param userRepository repository d'accès aux données, injecté par Spring
      * @param userMapper convertisseur entité/Model, injecté par Spring
      */

@@ -21,6 +21,8 @@ public class RatingController {
     private final RatingService ratingService;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param ratingService service métier, injecté par Spring
      */
     public RatingController(RatingService ratingService) {

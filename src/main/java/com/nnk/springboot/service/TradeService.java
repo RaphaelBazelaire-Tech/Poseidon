@@ -22,6 +22,8 @@ public class TradeService {
     private final TradeMapper tradeMapper;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param tradeRepository repository d'accès aux données, injecté par Spring
      * @param tradeMapper convertisseur entité/Model, injecté par Spring
      */

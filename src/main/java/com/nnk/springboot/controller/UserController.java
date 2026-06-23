@@ -24,6 +24,8 @@ public class UserController {
     private final BCryptPasswordEncoder passwordEncoder;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param userService service métier des utilisateurs, injecté par Spring
      * @param passwordEncoder encodeur BCrypt pour le hachage des mots de passe
      */

@@ -21,6 +21,8 @@ public class TradeController {
     private final TradeService tradeService;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param tradeService service métier, injecté par Spring
      */
     public TradeController(TradeService tradeService) {

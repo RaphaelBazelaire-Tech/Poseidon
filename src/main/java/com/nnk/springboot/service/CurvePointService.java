@@ -22,6 +22,8 @@ public class CurvePointService {
     private final CurvePointMapper curvePointMapper;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param curvePointRepository repository d'accès aux données, injecté par Spring
      * @param curvePointMapper convertisseur entité/Model, injecté par Spring
      */

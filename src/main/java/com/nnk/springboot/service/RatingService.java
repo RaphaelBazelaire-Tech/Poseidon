@@ -22,6 +22,8 @@ public class RatingService {
     private final RatingMapper ratingMapper;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param ratingRepository repository d'accès aux données, injecté par Spring
      * @param ratingMapper convertisseur entité/Model, injecté par Spring
      */

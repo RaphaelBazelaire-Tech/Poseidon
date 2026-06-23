@@ -24,6 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param userRepository repository d'accès aux utilisateurs, injecté par Spring
      */
     public CustomUserDetailsService(UserRepository userRepository) {

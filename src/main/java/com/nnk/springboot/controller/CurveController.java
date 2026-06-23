@@ -21,6 +21,8 @@ public class CurveController {
     private final CurvePointService curvePointService;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param curvePointService service métier, injecté par Spring
      */
     public CurveController(CurvePointService curvePointService) {

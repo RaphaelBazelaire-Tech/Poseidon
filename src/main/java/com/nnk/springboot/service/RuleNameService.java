@@ -22,6 +22,8 @@ public class RuleNameService {
     private final RuleNameMapper ruleNameMapper;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param ruleNameRepository repository d'accès aux données, injecté par Spring
      * @param ruleNameMapper convertisseur entité/Model, injecté par Spring
      */

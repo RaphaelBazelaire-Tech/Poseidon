@@ -21,6 +21,8 @@ public class BidListController {
     private final BidListService bidListService;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param bidListService service métier, injecté par Spring.
      */
     public BidListController(BidListService bidListService) {

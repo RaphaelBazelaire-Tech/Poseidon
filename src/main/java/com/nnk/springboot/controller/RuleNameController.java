@@ -21,6 +21,8 @@ public class RuleNameController {
     private final RuleNameService ruleNameService;
 
     /**
+     * Constructeur par défaut.
+     *
      * @param ruleNameService service métier, injecté par Spring
      */
     public RuleNameController(RuleNameService ruleNameService) {
