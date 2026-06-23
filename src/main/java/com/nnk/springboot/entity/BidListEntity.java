@@ -16,7 +16,7 @@ import java.sql.Timestamp;
  * Les accesseurs (getters/setters) sont générés par Lombok.
  */
 @Entity
-@Table(name = "bidList")
+@Table(name = "bidlist")
 @Getter
 @Setter
 @NoArgsConstructor
