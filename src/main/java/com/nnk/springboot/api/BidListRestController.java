@@ -45,7 +45,6 @@ public class BidListRestController {
     @PutMapping("/{id}")
     public ResponseEntity<BidListModel> update(@PathVariable("id") Integer id,
                                                @Valid @RequestBody BidListModel bidList) {
-
         if (bidListService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
