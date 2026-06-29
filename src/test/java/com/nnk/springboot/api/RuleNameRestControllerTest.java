@@ -1,7 +1,7 @@
 package com.nnk.springboot.api;
 
-import com.nnk.springboot.model.RatingModel;
-import com.nnk.springboot.service.RatingService;
+import com.nnk.springboot.model.RuleNameModel;
+import com.nnk.springboot.service.RuleNameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -25,100 +25,100 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RatingRestController.class)
+@WebMvcTest(RuleNameRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class RatingRestControllerTest {
+public class RuleNameRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private RatingService ratingService;
+    private RuleNameService ruleNameService;
 
-    private RatingModel sample(Integer id) {
-        return RatingModel.builder()
+    private RuleNameModel sample(Integer id) {
+        return RuleNameModel.builder()
                 .id(id)
-                .moodysRating("Aaa")
-                .orderNumber(1)
+                .name("Rule A")
+                .description("Desc")
                 .build();
     }
 
     @Test
     public void getAllReturns200AndList() throws Exception {
-        when(ratingService.findAll()).thenReturn(List.of(sample(1)));
+        when(ruleNameService.findAll()).thenReturn(List.of(sample(1)));
 
-        mockMvc.perform(get("/api/rating"))
+        mockMvc.perform(get("/api/rulename"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1));
     }
 
     @Test
     public void getByIdWhenFoundReturns200() throws Exception {
-        when(ratingService.findById(1)).thenReturn(Optional.of(sample(1)));
+        when(ruleNameService.findById(1)).thenReturn(Optional.of(sample(1)));
 
-        mockMvc.perform(get("/api/rating/1"))
+        mockMvc.perform(get("/api/rulename/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.moodysRating").value("Aaa"));
+                .andExpect(jsonPath("$.name").value("Rule A"));
     }
 
     @Test
     public void getByIdWhenNotFoundReturns404() throws Exception {
-        when(ratingService.findById(99)).thenReturn(Optional.empty());
+        when(ruleNameService.findById(99)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/rating/99"))
+        mockMvc.perform(get("/api/rulename/99"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void createReturns201AndLocation() throws Exception {
-        when(ratingService.save(any(RatingModel.class))).thenReturn(sample(1));
+        when(ruleNameService.save(any(RuleNameModel.class))).thenReturn(sample(1));
 
-        mockMvc.perform(post("/api/rating")
+        mockMvc.perform(post("/api/rulename")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"moodysRating\":\"Aaa\",\"orderNumber\":1}"))
+                        .content("{\"name\":\"Rule A\",\"description\":\"Desc\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", endsWith("/api/rating/1")))
+                .andExpect(header().string("Location", endsWith("/api/rulename/1")))
                 .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
     public void updateWhenFoundReturns200() throws Exception {
-        when(ratingService.findById(1)).thenReturn(Optional.of(sample(1)));
-        when(ratingService.save(any(RatingModel.class))).thenReturn(sample(1));
+        when(ruleNameService.findById(1)).thenReturn(Optional.of(sample(1)));
+        when(ruleNameService.save(any(RuleNameModel.class))).thenReturn(sample(1));
 
-        mockMvc.perform(put("/api/rating/1")
+        mockMvc.perform(put("/api/rulename/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"moodysRating\":\"Aaa\",\"orderNumber\":1}"))
+                        .content("{\"name\":\"Rule A\",\"description\":\"Desc\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
     public void updateWhenNotFoundReturns404() throws Exception {
-        when(ratingService.findById(99)).thenReturn(Optional.empty());
+        when(ruleNameService.findById(99)).thenReturn(Optional.empty());
 
-        mockMvc.perform(put("/api/rating/99")
+        mockMvc.perform(put("/api/rulename/99")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"moodysRating\":\"Aaa\",\"orderNumber\":1}"))
+                        .content("{\"name\":\"Rule A\",\"description\":\"Desc\"}"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void deleteWhenFoundReturns204() throws Exception {
-        when(ratingService.findById(1)).thenReturn(Optional.of(sample(1)));
+        when(ruleNameService.findById(1)).thenReturn(Optional.of(sample(1)));
 
-        mockMvc.perform(delete("/api/rating/1"))
+        mockMvc.perform(delete("/api/rulename/1"))
                 .andExpect(status().isNoContent());
 
-        verify(ratingService).deleteById(1);
+        verify(ruleNameService).deleteById(1);
     }
 
     @Test
     public void deleteWhenNotFoundReturns404() throws Exception {
-        when(ratingService.findById(99)).thenReturn(Optional.empty());
+        when(ruleNameService.findById(99)).thenReturn(Optional.empty());
 
-        mockMvc.perform(delete("/api/rating/99"))
+        mockMvc.perform(delete("/api/rulename/99"))
                 .andExpect(status().isNotFound());
     }
 }
