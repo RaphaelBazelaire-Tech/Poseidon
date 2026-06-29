@@ -1,7 +1,7 @@
 package com.nnk.springboot.api;
 
-import com.nnk.springboot.model.BidListModel;
-import com.nnk.springboot.service.BidListService;
+import com.nnk.springboot.model.CurvePointModel;
+import com.nnk.springboot.service.CurvePointService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -25,109 +25,101 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BidListRestController.class)
+@WebMvcTest(CurvePointRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class BidListRestControllerTest {
+public class CurvePointRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private BidListService bidListService;
+    private CurvePointService curvePointService;
 
-    private BidListModel sample(Integer id) {
-        return BidListModel.builder()
-                .bidListId(id)
-                .account("Account test")
-                .type("Account type")
-                .bidQuantity(15.0)
+    private CurvePointModel sample(Integer id) {
+        return CurvePointModel.builder()
+                .id(id)
+                .curveId(10)
+                .term(1.0)
+                .value(2.0)
                 .build();
     }
 
     @Test
     public void getAllReturns200AndList() throws Exception {
-        when(bidListService.findAll()).thenReturn(List.of(sample(1)));
+        when(curvePointService.findAll()).thenReturn(List.of(sample(1)));
 
-        mockMvc.perform(get("/api/bidlist"))
+        mockMvc.perform(get("/api/curvePoint"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].bidListId").value(1));
+                .andExpect(jsonPath("$[0].id").value(1));
     }
 
     @Test
     public void getByIdWhenFoundReturns200() throws Exception {
-        when(bidListService.findById(1)).thenReturn(Optional.of(sample(1)));
+        when(curvePointService.findById(1)).thenReturn(Optional.of(sample(1)));
 
-        mockMvc.perform(get("/api/bidlist/1"))
+        mockMvc.perform(get("/api/curvePoint/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.bidListId").value(1))
-                .andExpect(jsonPath("$.account").value("Account test"));
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.curveId").value(10));
     }
 
     @Test
     public void getByIdWhenNotFoundReturns404() throws Exception {
-        when(bidListService.findById(99)).thenReturn(Optional.empty());
+        when(curvePointService.findById(99)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/bidlist/99"))
+        mockMvc.perform(get("/api/curvePoint/99"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void createReturns201AndLocation() throws Exception {
-        when(bidListService.save(any(BidListModel.class))).thenReturn(sample(1));
+        when(curvePointService.save(any(CurvePointModel.class))).thenReturn(sample(1));
 
-        mockMvc.perform(post("/api/bidlist")
+        mockMvc.perform(post("/api/curvePoint")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"account\":\"Account test\",\"type\":\"Account type\",\"bidQuantity\":15.0}"))
+                        .content("{\"curveId\":10,\"term\":1.0,\"value\":2.0}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", endsWith("/api/bidlist/1")))
-                .andExpect(jsonPath("$.bidListId").value(1));
-    }
-
-    @Test
-    public void createWhenInvalidReturns400() throws Exception {
-        mockMvc.perform(post("/api/bidlist")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isBadRequest());
+                .andExpect(header().string("Location", endsWith("/api/curvePoint/1")))
+                .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
     public void updateWhenFoundReturns200() throws Exception {
-        when(bidListService.findById(1)).thenReturn(Optional.of(sample(1)));
-        when(bidListService.save(any(BidListModel.class))).thenReturn(sample(1));
+        when(curvePointService.findById(1)).thenReturn(Optional.of(sample(1)));
+        when(curvePointService.save(any(CurvePointModel.class))).thenReturn(sample(1));
 
-        mockMvc.perform(put("/api/bidlist/1")
+        mockMvc.perform(put("/api/curvePoint/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"account\":\"Account test\",\"type\":\"Account type\",\"bidQuantity\":15.0}"))
+                        .content("{\"curveId\":10,\"term\":1.0,\"value\":2.0}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.bidListId").value(1));
+                .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
     public void updateWhenNotFoundReturns404() throws Exception {
-        when(bidListService.findById(99)).thenReturn(Optional.empty());
+        when(curvePointService.findById(99)).thenReturn(Optional.empty());
 
-        mockMvc.perform(put("/api/bidlist/99")
+        mockMvc.perform(put("/api/curvePoint/99")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"account\":\"Account test\",\"type\":\"Account type\",\"bidQuantity\":15.0}"))
+                        .content("{\"curveId\":10,\"term\":1.0,\"value\":2.0}"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void deleteWhenFoundReturns204() throws Exception {
-        when(bidListService.findById(1)).thenReturn(Optional.of(sample(1)));
+        when(curvePointService.findById(1)).thenReturn(Optional.of(sample(1)));
 
-        mockMvc.perform(delete("/api/bidlist/1"))
+        mockMvc.perform(delete("/api/curvePoint/1"))
                 .andExpect(status().isNoContent());
 
-        verify(bidListService).deleteById(1);
+        verify(curvePointService).deleteById(1);
     }
 
     @Test
     public void deleteWhenNotFoundReturns404() throws Exception {
-        when(bidListService.findById(99)).thenReturn(Optional.empty());
+        when(curvePointService.findById(99)).thenReturn(Optional.empty());
 
-        mockMvc.perform(delete("/api/bidlist/99"))
+        mockMvc.perform(delete("/api/curvePoint/99"))
                 .andExpect(status().isNotFound());
     }
 }
